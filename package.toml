@@ -1,0 +1,6 @@
+[package]
+version = "0.1.0"
+name = { en = "Bilibili live", zh = "哔哩哔哩直播" }
+summary = { en = "Go live on Bilibili, get the stream key, end the stream, change title and area", zh = "哔哩哔哩直播间：开播拿推流码、下播、改标题和分区" }
+author = "SHORiN-KiWATA"
+icon = "camera"
