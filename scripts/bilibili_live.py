@@ -24,8 +24,8 @@ app signing in src/lib/app-sign.ts, startLive / updateRoomTitle /
 updateRoomArea in src/api/live.ts. Standard library only.
 
 The login (credentials.json, 0600) and a pending QR login live in
-MIYU_SCRIPT_STATE_DIR, kept per account; the area list is a cache in
-MIYU_SCRIPT_CACHE_DIR. Commands that change the room run only for the owner. QR codes for the user are written into the
+MIYU_STATE_DIR, kept per account; the area list is a cache in
+MIYU_CACHE_DIR. Commands that change the room run only for the owner. QR codes for the user are written into the
 workspace as PNG files; the caller shows them with the show tool.
 """
 
@@ -703,18 +703,18 @@ def qr_png_bytes(text, level="L", scale=10, quiet=4):
 
 
 # ---------------------------------------------------------------------------
-# 状态：凭据、未完成的登录放在 MIYU_SCRIPT_STATE_DIR（按账号分开、重启还在），
-# 分区列表是缓存，放 MIYU_SCRIPT_CACHE_DIR。
+# 状态：凭据、未完成的登录放在 MIYU_STATE_DIR（按账号分开、重启还在），
+# 分区列表是缓存，放 MIYU_CACHE_DIR。
 # 凭据只有一个来处：login 写，logout 删，别的命令读。
 # ---------------------------------------------------------------------------
 
 
 def state_dir(required=True):
-    path = os.environ.get("MIYU_SCRIPT_STATE_DIR")
+    path = os.environ.get("MIYU_STATE_DIR")
     if path:
         return path
     if required:
-        raise ToolError("no_state", "没有 MIYU_SCRIPT_STATE_DIR，登录态存不住。",
+        raise ToolError("no_state", "没有 MIYU_STATE_DIR，登录态存不住。",
                         hint="这个工具要在 Miyu 的会话里跑；Miyu 会按账号给它一个状态目录。")
     return None
 
@@ -725,7 +725,7 @@ def _state_file(name, required=True):
 
 
 def _cache_file(name):
-    base = os.environ.get("MIYU_SCRIPT_CACHE_DIR")
+    base = os.environ.get("MIYU_CACHE_DIR")
     return os.path.join(base, name) if base else None
 
 
