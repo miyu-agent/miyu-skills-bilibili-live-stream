@@ -46,7 +46,7 @@ metadata:
 
 ## 开播要验证
 
-`start` 交回 `verify_required`（要扫码验证）或 `face_auth_required`（要人脸认证）时，工作区里有 `bilibili-verify-qr.png`：`show` 给用户，用户在 App 里做完，再调一次 `start`。有些分区（比如虚拟主播区）要账号做过人脸认证才能用；用户不想认证的，换分区。
+`start` 交回 `verify_required`（要扫码验证）或 `face_auth_required`（要人脸认证）时，工作区里有 `bilibili-verify-qr.png`：`show` 给用户，用户在 App 里做完，再调一次 `start`。图生成不了时 `qr_image` 是空的，把 `qr_url` 发给用户。有些分区（比如虚拟主播区）要账号做过人脸认证才能用；用户不想认证的，换分区。
 
 ## 其他
 

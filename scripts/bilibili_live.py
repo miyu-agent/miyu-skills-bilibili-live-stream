@@ -345,8 +345,11 @@ _QR_FORMAT_BITS = {"L": 0b01, "M": 0b00, "Q": 0b11, "H": 0b10}
 _QR_MAX_VERSION = 10
 
 
-class QRError(Exception):
-    pass
+class QRError(ToolError):
+    """内容放不进二维码。是 ToolError，main() 照常交错误。"""
+
+    def __init__(self, message):
+        super().__init__("qr_too_long", message)
 
 
 # -- GF(256) 与 Reed-Solomon ------------------------------------------------
@@ -1123,9 +1126,16 @@ def op_start(sess, args):
                "?source_event=400&mid=%s" % sess.nav()["mid"])
         kind, what = (("verify_required", "这次开播要扫码验证") if code == 60024
                       else ("face_auth_required", "这次开播要人脸认证"))
-        raise ToolError(kind, what + "。", code=code,
-                        hint="用 show 把 qr_image 给用户，用户用哔哩哔哩 App 扫码做完后，再调一次 start。",
-                        detail={"qr_url": url, "qr_image": write_qr_image(url, VERIFY_QR) if url else None})
+        image = None
+        if url:
+            try:
+                image = write_qr_image(url, VERIFY_QR)
+            except QRError:
+                pass                  # 图画不出来也要把 qr_url 交给人
+        hint = ("用 show 把 qr_image 给用户，用户用哔哩哔哩 App 扫码做完后，再调一次 start。" if image else
+                "二维码图生成不了：把 qr_url 发给用户，用户用哔哩哔哩 App 打开做完后，再调一次 start。")
+        raise ToolError(kind, what + "。", code=code, hint=hint,
+                        detail={"qr_url": url, "qr_image": image})
     if code != 0:
         raise ApiError(code, response.get("message") or "开播失败")
 
@@ -1226,6 +1236,8 @@ def render_error(error):
         lines.extend("%s %s" % (c["id"], c["name"]) for c in detail["candidates"])
     if detail.get("qr_image"):
         lines.append("二维码：%s" % detail["qr_image"])
+    elif detail.get("qr_url"):
+        lines.append("qr_url：%s" % detail["qr_url"])
     if error.hint:
         lines.append(error.hint)
     return "\n".join(lines)
