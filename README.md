@@ -17,7 +17,7 @@ The package contains these files:
 
 **Logging in**: logging in takes two steps. The first `login` call writes a QR code to `bilibili-login-qr.png` in the workspace and returns, and the AI shows it to you with `show`; after you scan it, tell the AI, and the AI calls `login` once more to finish. You can also pass `wait` (at most 100 seconds) to wait for the scan within a single call.
 
-**The login state** is stored in the state folder Miyu gives the script, `MIYU_STATE_DIR` (in `credentials.json`, with permissions 0600). It is kept separately for each Miyu account and survives restarts: each account scans its own code and runs its own live room. The category list is a cache, kept in `MIYU_CACHE_DIR`. Older versions of the core provide `MIYU_SCRIPT_STATE_DIR` and `MIYU_SCRIPT_CACHE_DIR`, which the tool also accepts.
+**The login state** is stored in the state folder Miyu gives the script, `MIYU_STATE_DIR` (in `credentials.json`, with permissions 0600). It is kept separately for each Miyu account and survives restarts: each account scans its own code and runs its own live room. The category list is a cache, kept in `MIYU_CACHE_DIR`.
 
 **Where it can be used** (`Venues: local, private`): sessions on this computer and private chats on chat platforms can use it; group chats cannot. Because anyone can talk in a private chat, the commands that change the live room or switch the login (`update`, `start`, `stop`, `login`, `logout`) are only for the owner of the machine (`MIYU_CALLER_OWNER=1`), and everyone else can only use `status` and `areas`. Private chats with strangers belong to the system account, so they cannot see your login.
 

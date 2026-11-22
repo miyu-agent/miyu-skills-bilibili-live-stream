@@ -17,7 +17,7 @@
 
 **登录**：登录分两步。第一次调用 `login` 时，工具把二维码写进工作区的 `bilibili-login-qr.png` 就返回，AI 会用 `show` 给你看；你扫码之后告诉 AI，AI 再调用一次 `login` 完成登录。也可以带上 `wait`（最多 100 秒），在一次调用里等待扫码。
 
-**登录状态**存在 Miyu 给脚本的状态目录 `MIYU_STATE_DIR` 里（文件是 `credentials.json`，权限是 0600），按 Miyu 账号分开保存，重启之后仍然保留：每个账号扫自己的码，开自己的直播间。分区列表是缓存，放在 `MIYU_CACHE_DIR`。旧版核心提供的是 `MIYU_SCRIPT_STATE_DIR`、`MIYU_SCRIPT_CACHE_DIR`，工具也识别。
+**登录状态**存在 Miyu 给脚本的状态目录 `MIYU_STATE_DIR` 里（文件是 `credentials.json`，权限是 0600），按 Miyu 账号分开保存，重启之后仍然保留：每个账号扫自己的码，开自己的直播间。分区列表是缓存，放在 `MIYU_CACHE_DIR`。
 
 **在哪里可以使用**（`Venues: local, private`）：本机的会话和通讯平台的私聊可以使用，群聊里不能使用。由于私聊里任何人都能发话，所以修改直播间和更换登录的命令（`update`、`start`、`stop`、`login`、`logout`）只给机器的主人使用（`MIYU_CALLER_OWNER=1`），其他人只能使用 `status`、`areas`。陌生人的私聊归属于系统账号，看不到你的登录。
 
